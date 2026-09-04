@@ -66,5 +66,49 @@ fi
 
 
 # Help
-echo "${getopts[@]}"
+# echo "${getopts[@]}"
+############################################################
+# Main check                                                #
+############################################################
 echo "===== Disk Usage Information ====="
+
+# df -h "$path"
+
+# df = "disk free" — shows filesystem usage. -h = human-readable sizes 
+# K/M/G instead of raw byte counts). Running it on a path, say /home, gives output like:
+
+# Filesystem      Size  Used Avail Use% Mounted on
+# /dev/sda1        50G   32G   16G  67% /
+
+# Line 1 is the header, line 2 is the actual data row for that path.
+
+#  awk 'NR==2 {print $5}'
+
+# This takes that df output and pulls out one specific piece:
+
+# NR = "Number of Record" — the current line number awk is processing
+# NR==2 = "only act on line 2" (skips the header line)
+# {print $5} = print the 5th column of that line
+
+# Columns in awk are split by whitespace automatically, so counting the df output:
+
+# $1=Filesystem  $2=Size  $3=Used  $4=Avail  $5=Use%  $6=Mounted on
+
+# So $5 is 67% — exactly the usage percentage, nothing else.
+
+# tr -d '%'
+
+# tr = "translate" characters. -d '%' = delete every % character from the input. So 67% becomes just 67.
+usage=$(df -h "$path" | awk 'NR==2 {print $5}' | tr -d '%')
+
+echo "Path: $path"
+echo "Disk usage: ${usage}%"
+echo "Threshold: ${threshold}%"
+
+if [ "$usage" -ge "$threshold" ]; then
+    echo "Status: WARNING - usage has reached or exceeded the threshold."
+    exit 1
+else
+    echo "Status: OK - usage is below the threshold."
+    exit 0
+fi
