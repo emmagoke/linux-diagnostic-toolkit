@@ -79,3 +79,14 @@ if ping -c 2 -W 2 "$host" > /dev/null 2>&1; then
 else
     echo "Ping: FAILED - host is unreachable (may still allow TCP traffic)."
 fi
+
+############################################################
+# Network interface information                              #
+############################################################
+echo
+echo "----- Network Interface Information -----"
+if command -v ip > /dev/null 2>&1; then
+    ip -brief addr show
+else
+    ifconfig
+fi
