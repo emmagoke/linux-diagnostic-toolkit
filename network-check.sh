@@ -90,3 +90,22 @@ if command -v ip > /dev/null 2>&1; then
 else
     ifconfig
 fi
+
+
+############################################################
+# Optional TCP port check                                    #
+############################################################
+if [ -n "$port" ]; then
+    echo
+    echo "----- TCP Port Check -----"
+    if timeout 3 bash -c "echo > /dev/tcp/$host/$port" 2>/dev/null; then
+        echo "Port $port: OPEN - TCP connection succeeded."
+    else
+        echo "Port $port: CLOSED or unreachable - TCP connection failed."
+        exit 1
+    fi
+fi
+
+echo
+echo "Status: Diagnostics complete."
+exit 0
