@@ -46,6 +46,7 @@ Checks disk usage for a given path against a threshold and reports whether it's 
  
 - `threshold` — required, integer from 1–100
 - `path` — optional, defaults to `/`
+
 **Exit codes:**
 | Code | Meaning |
 |------|---------|
@@ -56,4 +57,24 @@ Checks disk usage for a given path against a threshold and reports whether it's 
 **Example:**
 ```bash
 ./disk-check.sh 80 /home
+```
+
+### `network-check.sh`
+ 
+Performs basic network diagnostics for a given host, with an optional port check.
+ 
+**Usage:**
+```bash
+./network-check.sh <hostname-or-ip> [port]
+```
+ 
+- Validates the host argument
+- Resolves the host and displays the resolved address
+- Performs a basic connectivity check (e.g. ping)
+- Displays network interface information
+- If a port is supplied, checks TCP connectivity to it (valid range: 1–65535)
+- Invalid input returns a non-zero exit code without crashing the script
+**Example:**
+```bash
+./network-check.sh google.com 443
 ```
