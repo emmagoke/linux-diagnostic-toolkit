@@ -26,3 +26,32 @@ while getopts ":h" option; do
     esac
 done
 shift $((OPTIND - 1))   # remove parsed flags, leave positional args in place
+
+
+############################################################
+# Positional arguments                                      #
+############################################################
+host="$1"
+port="$2"
+
+############################################################
+# Validate host argument                                    #
+############################################################
+if [ -z "$host" ]; then
+    echo "Error: hostname or IP is required." >&2
+    Help
+    exit 2
+fi
+
+############################################################
+# Validate port argument (if supplied)                      #
+############################################################
+if [ -n "$port" ]; then
+    if ! [[ "$port" =~ ^[0-9]+$ ]] || [ "$port" -lt 1 ] || [ "$port" -gt 65535 ]; then
+        echo "Error: port must be an integer from 1 to 65535." >&2
+        exit 2
+    fi
+fi
+
+echo "===== Network Diagnostics ====="
+echo "Host: $host"
