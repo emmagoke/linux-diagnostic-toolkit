@@ -30,8 +30,21 @@ while getopts ":h" option; do
             exit;;
     esac
 done
-echo "Args: ${args[@]}"
-echo "$1"
+
+# echo "Args: ${args[@]}"
+# echo "$1"
+threshold="$1"
+path="${2:-/}"  # Default to '/' if no path is provided
+
+############################################################
+# Validate input                                            #
+############################################################
+if [ -z "$threshold"]; then
+    echo "Error: threshold is required." >&2
+    Help
+    exit 2
+fi
+
 
 # Help
 echo "${getopts[@]}"
