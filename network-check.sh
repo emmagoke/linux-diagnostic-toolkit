@@ -68,3 +68,14 @@ if [ -z "$resolved" ]; then
 else
     echo "Resolved address: $resolved"
 fi
+
+############################################################
+# Basic connectivity check (ping)                            #
+############################################################
+echo
+echo "----- Connectivity Check (ping) -----"
+if ping -c 2 -W 2 "$host" > /dev/null 2>&1; then
+    echo "Ping: SUCCESS - host is reachable."
+else
+    echo "Ping: FAILED - host is unreachable (may still allow TCP traffic)."
+fi
