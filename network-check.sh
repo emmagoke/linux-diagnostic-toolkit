@@ -55,3 +55,16 @@ fi
 
 echo "===== Network Diagnostics ====="
 echo "Host: $host"
+
+############################################################
+# Resolve host                                               #
+############################################################
+resolved=$(getent hosts "$host" 2>/dev/null | awk '{print $1}' | head -n1)
+
+if [ -z "$resolved" ]; then
+    echo "Resolved address: could not resolve host '$host'"
+    echo "Status: FAILED - host resolution failed."
+    exit 1
+else
+    echo "Resolved address: $resolved"
+fi
