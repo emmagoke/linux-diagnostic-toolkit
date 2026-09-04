@@ -30,6 +30,7 @@ while getopts ":h" option; do
             exit;;
     esac
 done
+shift $((OPTIND - 1))
 
 # echo "Args: ${args[@]}"
 # echo "$1"
